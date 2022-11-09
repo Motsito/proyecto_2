@@ -1,6 +1,6 @@
 function checkCashRegister(price, cash, cid) {
     let object = {}
-    let valorMoneda = [
+    const valorMoneda = [
         ["PENNY", 0.01],
         ["NICKEL", 0.05],
         ["DIME", 0.1],
@@ -37,8 +37,8 @@ function checkCashRegister(price, cash, cid) {
         object= {
             'status': "CLOSED",
             'change': cid
-        }
-        console.log(object)
+        };
+        console.log(object);
     }// devolver el cambio  en monedas y billetes 
     else{
         //revision de cuanto falta a pagar
@@ -46,32 +46,55 @@ function checkCashRegister(price, cash, cid) {
         //
             //revisar cual es el billete mas grande
             do{
-                valorMoneda.forEach((v,index)=>{
-    
-                    if(v[1]<Deuda&&cid[index][1]>=0){
-                        grande =  v
+                valorMoneda.forEach((v,index)=>{    
+                    if(v[1] < Deuda && cid[index][1] > 0){
                         indice = index;
                     }
                 })
             //
             //ya sabemos cual es el mas grande aqui, el cual esta en 'grande' y indice es el indice de el valor mas grande
             //ahora necesito descontar billete por billete
-                cambio = valorMoneda[indice]
-                Deuda = Deuda - cambio[1]
-                cid[indice][1] =  (cid[indice][1] - cambio[1])
-                console.log(cid[indice][1], cambio,Deuda)
+            
+            Deuda = Deuda - valorMoneda[indice][1];
+            cid[indice][1] =  (cid[indice][1] - valorMoneda[indice][1]);
+
+                let existance = 'no';
+                let nE = 0;
+                
+                for(let i = 0; i< cambio.length;i++){
+                    for (let k = 0; k < cambio[i].length;k++){
+                        if(valorMoneda[indice][0]==cambio[i][k]){
+                            existance = 'si';
+                            nE = i;
+                            
+                        }
+                    }
+                }
+                
+
+
+                if(existance === 'si'){
+                    cambio[nE][1] = (cambio[nE][1]) + (valorMoneda[indice][1]);
+                    console.log('se sumo', valorMoneda[indice][1])
+                }else if(existance === 'no'){
+                    cambio.push(valorMoneda[indice]);
+                    console.log('se incorporo', valorMoneda[indice][1])
+                }
+
+
+                
                 
             //  
     //        console.log(Deuda,cambio)
-                if(cid[indice][1]!=0){
-                    console.log('vivo')
-                    cid.slice(indice,1)
-                }}while(cid[indice][1]>0)
-                
-    console.log(cid[indice][1])
+}while(Deuda>0)
+      
+    console.log(cambio)
     }
 
     console.log(cid)
+
+
+    console.log(valorMoneda)
     //
     
     }
